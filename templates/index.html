@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <script >
+           document.addEventListener('DOMContentLoaded', () => {
+       document.querySelector('#form').onsubmit = () => {
+
+
+       const request = new XMLHttpRequest();
+       const currency = document.querySelector('#currency').value;
+       request.open('POST', '/convert');
+
+
+       request.onload = () => {
+
+          const data = JSON.parse(request.responseText);
+
+
+          if (data.success) {
+          const contents = `1 USD is equal to ${data.rate} ${currency}.`
+          document.querySelector('#result').innerHTML = contents;
+
+          }
+          else {
+             document.querySelector('#result').innerHTML = 'There was an error.';
+          }
+       }
+
+       const data = new FormData();
+       data.append('currency', currency);
+
+
+       request.send(data);
+       return false;
+
+       }
+});
+       </script>
+       <title>Currency Converter</title>
+   </head>
+   <body>
+
+      <form id="form">
+          <input id="currency" autocomplete="off" placeholder="Currency">
+          <input type="submit" value="Get Exchange Rate">
+      </form>
+      <br>
+      <div id="result"></div>
+   </body>
+
+
+</html>
